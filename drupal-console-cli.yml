@@ -3,6 +3,6 @@
 #
 drupal:
   service: drupal-console
-  entrypoint: drupal
+  entrypoint: usermap
   description: Run a drupal console command
   mapping: <config.sharing.codeDir>:/src/code
