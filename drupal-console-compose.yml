@@ -6,6 +6,7 @@ drupal-console:
   command: 'true'
   volumes:
     - $KALABOX_APP_ROOT:/app
+    - $KALABOX_APP_ROOT/config/drupal-console:/root
   working_dir: /app
   stdin_open: true
   tty: true
