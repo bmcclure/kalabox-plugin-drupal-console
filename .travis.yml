@@ -1,0 +1,66 @@
+language: node_js
+sudo: required
+node_js:
+- '4.2'
+before_install:
+
+  # Global install some npm
+  - npm install -g grunt-cli
+
+  # Install kalabox
+  - sudo apt-get -y update
+  - sudo apt-get -y install iptables cgroup-bin bridge-utils curl
+  - curl -fsSL -o /tmp/kalabox.deb "http://installer.kalabox.io/kalabox-latest-dev.deb"
+  - sudo dpkg -i /tmp/kalabox.deb
+
+before_script:
+
+  # Nice dev helpers to verify our env
+  - ./scripts/travis-env.sh
+
+  # Sanity checks
+  - node --version
+  - npm --version
+  - grunt --version
+  - kbox version
+  - kbox create || true
+
+script:
+
+  # Run code tests
+  - grunt test:code
+
+  # Pull down a pantheon site so we can test out wraith
+  - mkdir -p ~/apps
+  - cd ~/apps
+  - kbox create pantheon -- --token=$PANTHEON_TOKEN --site=playbox --env=dev --name=playbox -d
+
+  # Go into app directory and install and activate our plugin
+  - cd playbox
+  - mkdir -p plugins
+  - cp -rfa "$TRAVIS_BUILD_DIR/." plugins/kalabox-plugin-drupal-console
+  - cp -f "$TRAVIS_BUILD_DIR/test/kalabox.yml" kalabox.yml
+  - kbox restart -- -d
+
+  # TODO: Test some functionality of drupal console
+
+  # Do some cleanup
+  - SSH_KEY_FINGERPRINT=$(ssh-keygen -l -f ~/.kalabox/pantheon/keys/pantheon.kalabox.id_rsa.pub | awk -F' ' '{print $2}' | sed 's/://g')
+  - kbox terminus ssh-keys delete --fingerprint=$SSH_KEY_FINGERPRINT --yes
+
+cache:
+  directories:
+  - node_modules
+notifications:
+  irc:
+  - chat.freenode.net#kalabox
+  email:
+    recipients:
+    - mike@kalabox.io
+    - alec@kalabox.io
+    on_success: always
+
+env:
+  global:
+  - secure: "Gtw+fapO/IfZmFBQcizGkHB3GjpHt26m84Gaa6LiWQUAx6B4fl4310xrygnfi4TSlrcXf+XpevE1bJD0etp/f4lcC9kjZcJmKdyPa47TIbgJ7R8LXu4vy1SV/hvCPt1PzBhbST70eIwPR8fLa2TzLLt4P7dRRsxT3OUBuM3N/y3/7MCG/tLCZcLTj+Cn5xiUbkyuV4z87MPJritKEnmIsjmLpX5UHwUts9XaLIFgyvuKQb7/Kat1lRbIh+OU2g2j3+f5NCcY/TZSMIECRHHbRjZICIhYBnOL0nZLOOCwaV7ulBw7FLq/LjZsoUBnlEqUfGQJqlpwOScxcGcYcZsle3wn6Em/+WbISkkLh+Y85cWm8PvXhXCQbZOSJ/+SRZlCMQE4NKVeIkRHkkzinoUjHBALUdxvrjm8vnSgqvoIRTqJYzeCn1bUXf6L57SgYe5pdcZ0CW1tJkDpkYJRYNirwWFiilz+IIvppO4OrEDR3ph2tH2Oz7z3tnCeZvof3gA1Ns24l+tCRDsjExx/DJwbqB9rUZiqmrl3zll5gKO0bvPVRPPK6KWu/ytkkCfTYfElHZQeuVf0YI5RE8ehpZpAZRZ8r2FIcDr+jIaqxFGD7ClsxgC5wL9W7L86fzjZEZbI2IbRW3WdXgtAMxyZYG51Dmx9XaY+UK1WBGTooWah41g="
+  - DOCKER_HOST: tcp://10.13.37.100:2375

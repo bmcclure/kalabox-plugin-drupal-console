@@ -1,0 +1,27 @@
+{
+  "name": "kalabox-plugin-drupal-console",
+  "description": "A plugin to add drupal console to your app.",
+  "keywords": [
+    "docker",
+    "kalabox",
+    "drupal",
+    "console"
+  ],
+  "version": "0.1.0-beta.1",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bmcclure/kalabox-plugin-drupal-console.git"
+  },
+  "bugs": {
+    "url": "http://github.com/bmcclure/kalabox-plugin-drupal-console",
+    "email": "ben.mcclure@gmail.com"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-bump": "^0.7.0",
+    "grunt-contrib-jshint": "~0.10.0",
+    "grunt-jscs": "~0.8.1",
+    "jshint-stylish": "~1.0.0",
+    "matchdep": "^0.3.0"
+  }
+}

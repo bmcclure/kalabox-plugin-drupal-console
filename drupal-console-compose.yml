@@ -1,0 +1,11 @@
+#
+# Wraith tooling.
+#
+drupal-console:
+  image: drupalconsole/console:latest
+  command: 'true'
+  volumes:
+    - $KALABOX_APP_ROOT:/src
+  working_dir: /root
+  stdin_open: true
+  tty: true
