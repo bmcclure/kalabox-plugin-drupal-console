@@ -2,7 +2,7 @@
 # Drupal Console tooling.
 #
 drupal-console:
-  image: drupalconsole/console:master
+  image: bmcclure/drupalconsole:1.0
   command: 'true'
   volumes:
     - $KALABOX_APP_ROOT/code:/app
