@@ -2,11 +2,15 @@
 # Drupal Console tooling.
 #
 drupal-console:
-  image: bmcclure/drupalconsole:1.0
+  image: drupalconsole/console:master
   command: 'true'
   volumes:
     - $KALABOX_APP_ROOT/code:/app
     - $KALABOX_APP_ROOT/config/drupal-console:/root
+  volumes_from:
+    - data
+  environment:
+    HOSTNAME: $KALABOX_APP_HOSTNAME
   working_dir: /app
   stdin_open: true
   tty: true
