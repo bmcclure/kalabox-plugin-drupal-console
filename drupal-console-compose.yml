@@ -2,7 +2,7 @@
 # Wraith tooling.
 #
 drupal-console:
-  image: drupalconsole/console:latest
+  image: drupalconsole/console:master
   command: 'true'
   volumes:
     - $KALABOX_APP_ROOT:/src
