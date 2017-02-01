@@ -5,4 +5,4 @@ drupal:
   service: drupal-console
   entrypoint: drupal
   description: Run a drupal console command
-  mapping: <config.sharing.codeDir>:/var/www/html
+  mapping: <config.sharing.codeDir>:/src/code
