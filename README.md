@@ -38,6 +38,17 @@ Restart your app. This will download and build any needed Docker images provided
 kbox restart -- -d
 ```
 
+Initializing Drupal Console
+--------------------------
+
+```bash
+# Initialize drupal console configuration
+kbox drupal init
+```
+
+This will generate the configuration for Drupal console, which can
+then be found in your application directory under /config/drupal-console.
+
 Using Drupal Console
 ------------
 
